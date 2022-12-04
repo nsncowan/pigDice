@@ -1,7 +1,7 @@
 describe: diceRoll()
 
 test: generate a random number between 1-6;
-code: 
+code: diceRoll();
 expected output: random output number: 1-6;
 
 test:
