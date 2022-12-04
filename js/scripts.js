@@ -15,8 +15,10 @@ Player.prototype.turnLogic = function(action) {
     if (roll === 1) {
       this.turnScore = 0 
       this.activePlayer = false;
+      return roll;
     } else {
       this.turnScore += roll;
+      return roll;
     }
   } else {
     this.totalScore += this.turnScore;
@@ -25,17 +27,27 @@ Player.prototype.turnLogic = function(action) {
   }
 };
 
-let player1 = new Player(0, 0, true);
-let player2 = new Player(0, 0, false);
 
 
 
+//UI
 
 function pigDice () {
+  let player1 = new Player(0, 0, true);
+  let player2 = new Player(0, 0, false);
   
 }
 
-//UI 
+
+function displayScores() {
+  document.querySelector("p#")
+}
+ 
+window.addEventListener("load", function (){
+  document.querySelector("").addEventListener("roll", //function);
+});
+
+
 
 /*
 Player.prototype.roll = function() {
