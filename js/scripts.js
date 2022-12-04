@@ -9,19 +9,19 @@ function diceRoll() {
 }
 
 Player.prototype.turnLogic = function(action) {
-  Player.activePlayer=true;
+  this.activePlayer=true;
   if (action === "roll") {
     let roll = diceRoll();
     if (roll === 1) {
-      Player.turnScore = 0 
-      Player.activePlayer = false;
+      this.turnScore = 0 
+      this.activePlayer = false;
     } else {
-      Player.turnScore += roll;
+      this.turnScore += roll;
     }
   } else {
-    Player.totalScore += Player.turnScore;
-    Player.turnScore = 0;
-    Player.activePlayer = false;
+    this.totalScore += this.turnScore;
+    this.turnScore = 0;
+    this.activePlayer = false;
   }
 };
 
@@ -38,6 +38,25 @@ function pigDice () {
 //UI 
 
 /*
+Player.prototype.roll = function() {
+  let roll = diceRoll();
+  if (roll === 1) {
+      Player.turnScore = 0 
+      Player.activePlayer = false;
+    } else {
+      Player.turnScore += roll;
+    }
+  } else {
+    Player.totalScore += Player.turnScore;
+    Player.turnScore = 0;
+    Player.activePlayer = false;
+  }
+}
+
+Player.prototype
+
+
+
 
 show/hide which players turn based on activeplayer status
 
