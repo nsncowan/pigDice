@@ -8,6 +8,7 @@ function diceRoll() {
   return Math.floor((Math.random() * 6) + 1);
 }
 
+/* TURN LOGIC FUNCTION
 Player.prototype.turnLogic = function(action) {
   this.activePlayer=true;
   if (action === "roll") {
@@ -26,6 +27,7 @@ Player.prototype.turnLogic = function(action) {
     this.activePlayer = false;
   }
 };
+*/
 
 Player.prototype.rollDice = function() {
   this.activePlayer = true;
@@ -56,8 +58,7 @@ function getActiveUser() {
   let activeUser;
   if (player1.activePlayer = true) {
     activeUser = player1;
-  }
-  else {
+  } else {
     activeUser = player2;
   }
   return activeUser;
@@ -67,8 +68,8 @@ function pigDice () {
   let currentUser = getActiveUser();
   let rollBtn = document.getElementById("rollDice");
   let passBtn = document.getElementById("passDice");
-  rollBtn.addEventListener('click', currentUser.prototype.rollDice);
-  passBtn.addEventListener('click', currentUser.prototype.endTurn);
+  rollBtn.addEventListener('click', currentUser.rollDice);
+  passBtn.addEventListener('click', currentUser.endTurn);
 }
 
 
@@ -128,3 +129,4 @@ function updateVar(event){
     }
     console.log(player.currentChoice);
 }
+*/
