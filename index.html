@@ -9,33 +9,48 @@
 
 
 <body>
+
   <h1>Pig Dice</h1>
-
+  <br>
+  <form id="numberOfPlayers">
+    <input type="radio" id="1player" name="userCount" value="1">
+    <label for="1player">1 Player</label><br>
+    <input type="radio" id="2player" name="userCount" value="2">
+    <label for="2player">2 Player</label><br>
+    <input type="submit">
+  </form>
+  <br>
   <div id="Totalscores">
-    <h2>Player 1's Score</h2>
-      <p id="player1TotalScore"></p>
-    <h2>Player 2's Score</h2>
-      <p id="player2TotalScore"></p>
+    <h2>Player 1's Score: <span id="player1TotalScore">0</span></h2>
+    <h2>Player 2's Score: <span id="player2TotalScore">0</span></h2>
   </div>
-
-
- 
-  <div id="player1" class="hidden">
+  <div id="winner" class="hidden">
+    <h3>The winner of the game is Player <span id="winnerIndex"></span>!!</h3>
+  </div>
+  <br>
+  <div>
     <h3>Player 1's turn</h3>
-    <p id="player1TurnScore"></p>
+    <h4>You just rolled a: <span id="player1CurrentRoll">0</span></h4>
+    <h4>Your current turn score is: <span id="player1TurnScore">0</span></h4>
+    <div id="player1Controls">
+      <button type="button" id="rollDicePlayer1"> Roll </button>
+      <button type="button" class ="pass hidden" id="passDicePlayer1"> Pass </button>
+    </div>
   </div>
-
-  <div id="player2" class="hidden">
+  <br>
+  <div>
     <h3>Player 2's turn</h3>
-    <p id="player2TurnScore"></p>
+    <h4>You just rolled a: <span id="player2CurrentRoll">0</span></h4>
+    <h4>Your current turn score is: <span id="player2TurnScore">0</span></h4>
+    <div id="player2Controls" class="hidden">
+      <button type="button" id="rollDicePlayer2"> Roll </button>
+      <button type="button" class= "pass hidden" id="passDicePlayer2"> Pass </button>
+    </div>
   </div>
-
-  <button id="rollDice" value="roll">Roll</button>
-  <button id="passDice" value="pass">Pass</button>
+  <br><br>
+  <button onClick="window.location.reload()">Start Over!</button>
 
 
 </body>
-
-
 
 </html>

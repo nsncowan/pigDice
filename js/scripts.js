@@ -1,79 +1,175 @@
-function Player(turnScore, totalScore, activePlayer) {
-  this.turnScore = turnScore;
-  this.totalScore = totalScore;
-  this.activePlayer = activePlayer;
+//business
+
+function Game() {
+  this.players = [];
+  this.activePlayer = 0;
+  this.playerCount = 2;
+}
+
+function Player() {
+  this.turnScore = 0;
+  this.totalScore = 0;
+  this.currentRoll = 0;
+  this.rollsThisTurn = 0;
+  this.rolledYet = false;
 }
 
 function diceRoll() {
-  return Math.floor((Math.random() * 6) + 1);
+  return Math.floor((Math.random() * 6) + 2);
 }
 
-/* TURN LOGIC FUNCTION
-Player.prototype.turnLogic = function(action) {
-  this.activePlayer=true;
-  if (action === "roll") {
-    let roll = diceRoll();
-    if (roll === 1) {
-      this.turnScore = 0 
-      this.activePlayer = false;
-      return roll;
-    } else {
-      this.turnScore += roll;
-      return roll;
-    }
+Game.prototype.switchPlayer = function () {
+  if (this.activePlayer===0) {
+    this.activePlayer = 1;
   } else {
-    this.totalScore += this.turnScore;
-    this.turnScore = 0;
-    this.activePlayer = false;
+    this.activePlayer = 0;
   }
+  // if (this.playerCount = 1) {
+  //   Player.chooseAction();
+  // }
 };
-*/
 
 Player.prototype.rollDice = function() {
-  this.activePlayer = true;
+  this.rolledYet = true;
   let roll = diceRoll();
   if (roll === 1) {
     this.turnScore = 0;
-    this.activePlayer = false;
-    return roll;
+    this.rollsThisTurn = 0;
+    newGame.switchPlayer();
+    this.currentRoll = roll;
+    this.rolledYet = false;
   } else {
     this.turnScore += roll;
-    return roll;
+    this.currentRoll = roll;
+    this.rollsThisTurn += 1;
   }
 };
 
 Player.prototype.endTurn = function() {
   this.totalScore += this.turnScore;
-  this.activePlayer = false;
-  return this.totalScore;
+  this.turnScore = 0;
+  this.rolledYet = false;
+  this.rollsThisTurn = 0;
+  newGame.switchPlayer();
+};
+
+Player.prototype.chooseAction = function() {
+  if (this.rollsThisTurn <2) {
+    this.rollDice;
+  } else {
+    this.endTurn;
+  }
 }
+
+let newGame = new Game();
+let player1 = new Player();
+let player2 = new Player();
+newGame.players.push(player1, player2);
+
+// Player.prototype.aiLogic = function() {
+  
+// }
 
 
 //UI
 
-let player1 = new Player(0, 0, true);
-let player2 = new Player(0, 0, false);
+function displayScores() {
+  document.querySelector("span#player1TotalScore").innerText = player1.totalScore;
+  document.querySelector("span#player2TotalScore").innerText = player2.totalScore;
+  document.querySelector("span#player1CurrentRoll").innerText = player1.currentRoll;
+  document.querySelector("span#player2CurrentRoll").innerText = player2.currentRoll;
+  document.querySelector("span#player1TurnScore").innerText = player1.turnScore;
+  document.querySelector("span#player2TurnScore").innerText = player2.turnScore;
+}
 
-function getActiveUser() {
-  let activeUser;
-  if (player1.activePlayer = true) {
-    activeUser = player1;
+function manageUI () {
+  let p1Controls = document.getElementById("player1Controls")
+  let p2Controls = document.getElementById("player2Controls")
+
+  if (newGame.activePlayer === 0 ) {
+    p1Controls.removeAttribute("class", "hidden");
+    p2Controls.setAttribute("class", "hidden");
   } else {
-    activeUser = player2;
+    p1Controls.setAttribute("class", "hidden");
+    p2Controls.removeAttribute("class", "hidden");
   }
-  return activeUser;
+
+  if (newGame.players[newGame.activePlayer].rolledYet === false) {
+      document.getElementById(`passDicePlayer${(newGame.activePlayer)+1}`).setAttribute("class", "hidden");
+  }
 }
 
-function pigDice () {
-  let currentUser = getActiveUser();
-  let rollBtn = document.getElementById("rollDice");
-  let passBtn = document.getElementById("passDice");
-  rollBtn.addEventListener('click', currentUser.rollDice);
-  passBtn.addEventListener('click', currentUser.endTurn);
+function amIWinner() {
+  let p1Controls = document.getElementById("player1Controls")
+  let p2Controls = document.getElementById("player2Controls")
+
+  if ((player1.totalScore + player1.turnScore) >= 100) {
+    player1.totalScore += player1.turnScore;
+    p1Controls.setAttribute("class", "hidden");
+    p2Controls.setAttribute("class", "hidden");
+    document.getElementById("winner").removeAttribute("class");
+    document.getElementById("winnerIndex").innerText = "1";
+  } else if ((player2.totalScore + player2.turnScore) >= 100) {
+    player2.totalScore += player2.turnScore;
+    p1Controls.setAttribute("class", "hidden");
+    p2Controls.setAttribute("class", "hidden");
+    document.getElementById("winner").removeAttribute("class");
+    document.getElementById("winnerIndex").innerText = "2";
+  }
 }
 
+window.addEventListener("load", function() {
+  let player1RollBtn = document.getElementById("rollDicePlayer1");
+  let player1PassBtn = document.getElementById("passDicePlayer1");
+  let player2RollBtn = document.getElementById("rollDicePlayer2");
+  let player2PassBtn = document.getElementById("passDicePlayer2");
+  let numberOfPlayers = document.getElementById("numberOfPlayers");
 
-/*
+  numberOfPlayers.addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    newGame.playerCount = parseInt(document.querySelector('input[name="userCount"]:checked').value);
+  });
+
+  // document.querySelector('input[name="genderS"]:checked').value;
+
+  player1RollBtn.addEventListener('click', function() {
+    newGame.players[newGame.activePlayer].rollDice();
+    document.getElementById("passDicePlayer1").removeAttribute("class", "hidden");
+    amIWinner();
+    displayScores();
+    manageUI();
+  });
+
+  player1PassBtn.addEventListener('click', function () {
+    newGame.players[newGame.activePlayer].endTurn();
+    document.getElementById("passDicePlayer1").setAttribute("class", "hidden");
+    amIWinner();
+    displayScores();
+    manageUI();
+  });
+
+
+  player2RollBtn.addEventListener('click', function () {
+    newGame.players[newGame.activePlayer].rollDice();
+    document.getElementById("passDicePlayer2").removeAttribute("class", "hidden");
+    amIWinner();
+    displayScores();
+    manageUI();
+  });
+
+  player2PassBtn.addEventListener('click', function () {
+    newGame.players[newGame.activePlayer].endTurn();
+    document.getElementById("passDicePlayer2").setAttribute("class", "hidden");
+    amIWinner();
+    displayScores();
+    manageUI();
+  });
+});
+
+
+
+/* DRAFTS
 function pigDice () {
   let player1 = new Player(0, 0, true);
   let player2 = new Player(0, 0, false);
